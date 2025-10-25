@@ -1,0 +1,15 @@
+Metadata-Version: 2.1
+Name: scipion-em-bindcraft
+Version: 0.0.1
+Summary: Plugin to design proteins with BindCraft within the Scipion framework
+Author-email: Roberto Marabini <roberto@cnb.csic.es>, Marta Martinez <mmmtnez@cnb.csic.es>
+License: GNU General Public License v3 (GPLv3)
+Project-URL: Homepage, https://github.com/scipion-em/scipion-em-bindcraft
+Project-URL: Repository, https://github.com/scipion-em/scipion-em-bindcraft
+Project-URL: Issues, https://github.com/scipion-em/scipion-em-bindcraft/issues
+Keywords: scipion,electron-microscopy,cryo-em,structural-biology,image-processing,scipion-3.0,bindcraft
+Requires-Python: >=3.8
+Description-Content-Type: text/x-rst
+License-File: LICENSE
+Requires-Dist: scipion-pyworkflow
+Requires-Dist: scipion-em
