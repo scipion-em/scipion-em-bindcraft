@@ -1,2 +1,2 @@
 [pyworkflow.plugin]
-carbonara = bindcraft
+bindcraft = bindcraft

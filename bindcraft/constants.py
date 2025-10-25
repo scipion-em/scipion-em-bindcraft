@@ -38,6 +38,6 @@ repo_url = "https://github.com/martinpacesa/BindCraft "
 repo_name = "BindCraft"
 conda_env = "BindCraft"
 CUDA_VERSION = '12.4' (# my case in copernico, select the specific one in each case)
-CONDA = 'conda'
+
 
 CLUSTALO = 'clustalo'

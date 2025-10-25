@@ -32,17 +32,18 @@ import pyworkflow.utils as pwutils
 from scipion.install.funcs import VOID_TGZ
 from pwem.constants import MAXIT
 
-from .constants import (V1, BINDCRAFT_ENV_ACTIVATION, conda_env,
-                        CUDA_VERSION, CONDA, BINDCRAFT_PROGRAM)
+from .constants import (BINDCRAFT_ENV_ACTIVATION, conda_env,
+                       repo_name, BINDCRAFT_PROGRAM)
                         
 GIT_CLONE_CMD = "bash install_bindcraft.sh --cuda '12.4' --pkg_manager 'conda'"
 __version__ = "0.0.1"
 _logo = "icon.png"
 _references = ['Pacesa_Nickel_Schellhaas_Schmidt_Pyatova_Kissling_Barendse_Choudhury_Kapoor_Alcaraz-Serna_et al._2025']
 
-GIT_CLONE_CMD = f'bash install_bindcraft.sh --cuda {CUDA_VERSION} --pkg_manager {CONDA}'
+# GIT_CLONE_CMD = f"bash install_bindcraft.sh --cuda {CUDA_VERSION} --pkg_manager 'conda'"
 
 class Plugin(pwem.Plugin):
+    print("BBBBBBBBBBBBBBBBBBBBBBBBBBBB")
 
     @classmethod
     def _defineVariables(cls):
@@ -127,7 +128,8 @@ class Plugin(pwem.Plugin):
             install_cmds = [
                 # Activate Conda y create environment
                 f'{cls.getCondaActivationCmd()}'
-                f'{create_or_update_conda_env(conda_env, python_version="3.10")} && '
+                f'{create_or_update_conda_env(conda_env, python_version="3.8")} && '
+                f'git clone {repo_name}'
                 # f' conda create -y -n {conda_env} python=3.9 && '
                 # change to
                 # f'cd {conda_env_path}  && '
@@ -141,13 +143,13 @@ class Plugin(pwem.Plugin):
 
             # finalCmds = [(" ".join(install_cmds), FLAG)]
             finalCmds = [(install_cmds, FLAG)]
-            # print(
-            #     "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA: ",
-            #     os.getcwd(),
-            #     os.path.join(pwem.Config.EM_ROOT, f"{conda_env}-{version}"),
-            #     finalCmds, FLAG)
+            print(
+                 "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA: ",
+                 os.getcwd(),
+                 os.path.join(pwem.Config.EM_ROOT, f"{conda_env}-{version}"),
+                 finalCmds, FLAG)
 
-            # CARBonAra package registered in Scipion environment
+            # BindCraft package registered in Scipion environment
             env.addPackage(
                 name="bindcraft",
                 version=version,

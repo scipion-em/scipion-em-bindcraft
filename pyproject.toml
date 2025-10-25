@@ -12,7 +12,7 @@ authors = [
 ]
 description = "Plugin to design proteins with BindCraft within the Scipion framework"
 readme = "README.rst"
-requires-python = ">=3.10"
+requires-python = ">=3.8"
 keywords = ["scipion", "electron-microscopy", "cryo-em", "structural-biology", "image-processing", "scipion-3.0", "bindcraft"]
 license = {text = "GNU General Public License v3 (GPLv3)"}
 
