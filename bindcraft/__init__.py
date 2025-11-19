@@ -32,18 +32,16 @@ import pyworkflow.utils as pwutils
 from scipion.install.funcs import VOID_TGZ
 from pwem.constants import MAXIT
 
-from .constants import (BINDCRAFT_ENV_ACTIVATION, conda_env,
-                       repo_name, BINDCRAFT_PROGRAM)
+from .constants import (BINDCRAFT_ENV_ACTIVATION, conda_env, repo_url, repo_colab,
+                       repo_name, BINDCRAFT_PROGRAM, CUDA_VERSION)
                         
-GIT_CLONE_CMD = "bash install_bindcraft.sh --cuda '12.4' --pkg_manager 'conda'"
 __version__ = "0.0.1"
 _logo = "icon.png"
 _references = ['Pacesa_Nickel_Schellhaas_Schmidt_Pyatova_Kissling_Barendse_Choudhury_Kapoor_Alcaraz-Serna_et al._2025']
 
-# GIT_CLONE_CMD = f"bash install_bindcraft.sh --cuda {CUDA_VERSION} --pkg_manager 'conda'"
+GIT_INSTALL_CMD = f"bash install_bindcraft.sh --cuda {CUDA_VERSION} --pkg_manager 'conda'"
 
 class Plugin(pwem.Plugin):
-    print("BBBBBBBBBBBBBBBBBBBBBBBBBBBB")
 
     @classmethod
     def _defineVariables(cls):
@@ -86,37 +84,6 @@ class Plugin(pwem.Plugin):
         import subprocess
         import json
 
-        def create_or_update_conda_env(
-                env_name, packages=None, python_version="3.8"):
-            # Get list of existing environments
-            result = subprocess.run(
-                ["conda", "env", "list", "--json"],
-                capture_output=True,
-                text=True,
-                check=True
-            )
-            envs = json.loads(result.stdout)["envs"]
-            env_exists = any(
-                env.endswith(f"/{env_name}") or
-                env.endswith(f"\\{env_name}") for env in envs)
-
-            if env_exists:
-                print(f"Updating existing Conda environment: {env_name}")
-                command = f"conda install --yes --name {env_name}"
-                if packages:
-                    command += packages
-                else:
-                    command = f"conda update --all --yes --name {env_name}"
-            else:
-                print(f"Creating new Conda environment: {env_name}")
-                command = "conda create --yes --name "\
-                          f"{env_name} python={python_version}"
-                if packages:
-                    command += packages
-
-            # subprocess.run(command, check=True)
-            return command
-
         def getBindCraftInstallation(version):
             FLAG = f'{conda_env}_{version}_installed'
 
@@ -128,26 +95,22 @@ class Plugin(pwem.Plugin):
             install_cmds = [
                 # Activate Conda y create environment
                 f'{cls.getCondaActivationCmd()}'
-                f'{create_or_update_conda_env(conda_env, python_version="3.8")} && '
-                f'git clone {repo_name}'
-                # f' conda create -y -n {conda_env} python=3.9 && '
-                # change to
-                # f'cd {conda_env_path}  && '
+                f'conda create -y -n {conda_env} python=3.10 && '
+                f'conda activate {repo_name} && '
+                f'python -m pip install {repo_colab} && '
+                f'git clone {repo_url} && '                
+                # change to repo_name
+                f'cd {repo_name}  && '
                 #f'{cls.getBindCraftActivationCmd()} &&'
                 # Install
-                f'{GIT_CLONE_CMD} && '
+                f'{GIT_INSTALL_CMD} && '
                 # Flag installation finished
-                # f'cd .. && '
+                f'cd .. && '
                 f'touch {FLAG}'
             ]
 
             # finalCmds = [(" ".join(install_cmds), FLAG)]
             finalCmds = [(install_cmds, FLAG)]
-            print(
-                 "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA: ",
-                 os.getcwd(),
-                 os.path.join(pwem.Config.EM_ROOT, f"{conda_env}-{version}"),
-                 finalCmds, FLAG)
 
             # BindCraft package registered in Scipion environment
             env.addPackage(
