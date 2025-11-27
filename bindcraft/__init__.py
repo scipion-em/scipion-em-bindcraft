@@ -49,7 +49,7 @@ class Plugin(pwem.Plugin):
                        cls.getBindCraftActivationCmd())
 
     @classmethod
-    def getCarbonaraCmd(cls):
+    def getBindCraftCmd(cls):
         cmd = cls.getCondaActivationCmd()
         cmd += f" "
         cmd += cls.getVar(BINDCRAFT_ENV_ACTIVATION)
